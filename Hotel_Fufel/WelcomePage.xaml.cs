@@ -17,5 +17,24 @@ namespace Hotel_Fufel
             WelcomeText.Text = $"Добро пожаловать, {currentUser.Name}!";
 
         }
+        private void Profile_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.NavigateTo(new ProfilePage(_mainWindow));
+        }
+
+        private void Contacts_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.NavigateTo(new ProfilePage(_mainWindow));
+        }
+
+        private void Main_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.NavigateTo(new WelcomePage(_mainWindow, WelcomePage.currentUser));
+        }
+
+        private void Rooms_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.NavigateTo(new HotelRooms(_mainWindow));
+        }
     }
 }

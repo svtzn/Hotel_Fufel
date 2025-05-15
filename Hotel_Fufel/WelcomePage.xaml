@@ -16,19 +16,19 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="70,60,70,0">
             <Image Source="Resources/logo1.png" Height="64" Width="222" Margin="0,0,10,0" />
-            <Button Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
+            <Button Name="Main" Click="Main_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Главная" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
-            <Button Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
+            <Button Name ="Rooms" Click="Rooms_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Бронирования" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
-            <Button Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
+            <Button Name="Contacts" Click="Contacts_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Контакты" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
-            <Button Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
+            <Button Name="Profile" Click="Profile_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Профиль" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <StackPanel>
                 <TextBlock TextWrapping="Wrap" Name="WelcomeText" TextAlignment="Left" FontFamily="Calibri" FontSize="50" Width="500" Height="178" Margin="0,50,130,0" />
-                <Button Content="ПЕРЕЙТИ К НОМЕРАМ" Style="{DynamicResource ButtonStyle1}" Width="180" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="78,0,0,0"/>
+                <Button Content="ПЕРЕЙТИ К НОМЕРАМ" Click="Rooms_Click" Style="{DynamicResource ButtonStyle1}" Width="180" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="78,0,0,0"/>
             </StackPanel>
             <StackPanel Margin="0,40,0,0" >
                 <Border Width="300" Height="250" Background="#DDDDDD" CornerRadius="18" Margin="78,0,0,0" HorizontalAlignment="Left">
