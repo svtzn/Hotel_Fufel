@@ -11,12 +11,19 @@ namespace Hotel_Fufel
     public partial class HotelRooms : Page
     {
         private readonly MainWindow _mainWindow;
+        private HotelRoomsViewModel VM => DataContext as HotelRoomsViewModel;
         public HotelRooms(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             this.DataContext = new HotelRoomsViewModel();
 
+        }
+        private void Card_Click(object sender, MouseButtonEventArgs e)
+        {
+            var border = (Border)sender;
+            var room = border.DataContext as Room;
+            VM.SelectedRoom = room;
         }
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
