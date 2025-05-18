@@ -10,8 +10,6 @@ namespace Hotel_Fufel
     {
         public int Id { get; set; }
         public int RoomsAmount { get; set; }
-        public double Square { get; set; }
-        public string Description { get; set; }
         public decimal PricePerNight { get; set; }
         public string ImagePath { get; set; }
         public bool Smoke { get; set; }
@@ -20,6 +18,6 @@ namespace Hotel_Fufel
         public string ComfortLevel { get; set; }
         public bool Kitchen { get; set; }
         public bool Shower { get; set; }
+        public bool IsFree { get; set; }
     }
-
 }

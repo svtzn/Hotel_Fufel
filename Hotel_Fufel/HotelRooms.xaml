@@ -41,7 +41,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Список номеров -->
-            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <ListBox ItemsSource="{Binding Rooms}"
                  SelectedItem="{Binding SelectedRoom}"
                  BorderThickness="0"
