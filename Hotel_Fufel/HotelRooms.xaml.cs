@@ -32,7 +32,7 @@ namespace Hotel_Fufel
 
         private void Contacts_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindow.NavigateTo(new ProfilePage(_mainWindow));
+            _mainWindow.NavigateTo(new ContactsPage(_mainWindow));
         }
 
         private void Main_Click(object sender, RoutedEventArgs e)

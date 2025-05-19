@@ -25,8 +25,51 @@
             <Button Name="Profile" Click="Profile_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Профиль" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="430"/>
+                <RowDefinition Height="197"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+                <TextBlock Text="Приветствуем вас в нашем чудесном мире!" FontFamily="Trebuchet MS" FontSize="20" Margin="0,30,0,0" HorizontalAlignment="Center"/>
+                <Border Height="300" Width="650" CornerRadius="18" Background="#ebebeb" Margin="0,50,0,0" Padding="20">
+                    <StackPanel>
+                        <TextBlock FontSize="16" Width="500" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center">
+                        Мы — FUFELSHMERTZ, не просто отель, а место, где реальность становится волшебной. Здесь каждый уголок пропитан заботой, а гость — наш самый дорогой друг. Хотите убедиться? Приезжайте, и мы покажем вам, что значит настоящий отдых!
+                    </TextBlock>
+                    <TextBlock FontSize="16" Width="500" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center" Margin="0,10,0,0">
+                        Наш отель — это уютные номера с дизайном, вдохновлённым сказками, изысканная кухня, которая удивит даже самых взыскательных гурманов, и атмосфера, где время замедляет свой бег. Мы любим своих гостей и делаем всё, чтобы ваше пребывание здесь стало незабываемым.
+                    </TextBlock>
+                        <TextBlock FontSize="16" Width="500" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center" Margin="0,10,0,0">
+                            P.S. Если вы вдруг потеряетесь — просто спросите у первого встречного кота в шляпе. Они здесь все знают. 😉
+                        </TextBlock>
+            </StackPanel>
+            </Border>
+            </StackPanel>
+            <Border Grid.Row="1" Background="#ebebeb" Padding="10" Margin="20,25,20,10" CornerRadius="18" Height="160">
+                <StackPanel>
+                <TextBlock FontSize="16" Width="500" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center">Как нас найти?</TextBlock>
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <StackPanel>
+                        <TextBlock Text="📍 Адрес:" FontSize="16" Width="100" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                        <TextBlock Text="Улица Тайн, дом 17, город Грёзоград, Страна Чудес" FontSize="16" Width="200" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="📞 Телефон:" FontSize="16" Width="100" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                        <TextBlock Text="+7 (XXX) XXX-XX-XX" FontSize="16" Width="180" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="📧 Почта:" FontSize="16" Width="100" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                        <TextBlock Text="welcome@fufelshmertz.com" FontSize="16" Width="200" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="🌐 Соцсети:" FontSize="16" Width="100" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                        <TextBlock Text="Instagram: @fufelshmertz" FontSize="16" Width="160" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                        <TextBlock Text="Telegram: t.me/fufelshmertz_hotel" FontSize="16" Width="160" TextWrapping ="Wrap" FontFamily="Treuchet MS" TextAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

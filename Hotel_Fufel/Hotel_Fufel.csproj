@@ -70,9 +70,11 @@
       <DependentUpon>RegisterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms.cs" />
+    <Compile Include="Services\UserRepository.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ViewModels\HotelRoomsViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>

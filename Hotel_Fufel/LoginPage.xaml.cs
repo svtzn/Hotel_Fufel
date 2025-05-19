@@ -1,24 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
+using Hotel_Fufel.Services;
 
 namespace Hotel_Fufel
 {
-    /// <summary>
-    /// Логика взаимодействия для LoginPage.xaml
-    /// </summary>
     public partial class LoginPage : Page
     {
         private readonly MainWindow _mainWindow;
@@ -36,35 +21,42 @@ namespace Hotel_Fufel
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            string email = EmailTextBox.Text;
+            // Читаем поля
+            string email = EmailTextBox.Text.Trim();
             string password = PasswordBox.Password;
-            bool isValid = true;
 
-            var inputs = new (string Value, TextBlock ErrorText)[]
+            // Сбрасываем ошибки
+            EmailError.Text = PasswordError.Text = "";
+            EmailError.Visibility = PasswordError.Visibility = Visibility.Collapsed;
+
+            // Проверки пустых
+            if (string.IsNullOrWhiteSpace(email))
             {
-                (PasswordBox.Password, PasswordError),
-                (EmailTextBox.Text, EmailError),
-            };
-
-
-            foreach (var (value, error) in inputs)
+                EmailError.Text = "Поле не может быть пустым";
+                EmailError.Visibility = Visibility.Visible;
+            }
+            if (string.IsNullOrWhiteSpace(password))
             {
-                bool empty = string.IsNullOrWhiteSpace(value);
-                error.Text = empty ? "Поле не может быть пустым" : "";
-                error.Visibility = empty ? Visibility.Visible : Visibility.Collapsed;
-                if (empty) isValid = false;
+                PasswordError.Text = "Поле не может быть пустым";
+                PasswordError.Visibility = Visibility.Visible;
+            }
+            if (EmailError.Visibility == Visibility.Visible ||
+                PasswordError.Visibility == Visibility.Visible)
+            {
+                return;
             }
 
-            if (isValid)
+            // Ищем пользователя в репозитории
+            var user = UserRepository.Find(email, password);
+            if (user == null)
             {
-                User newUser = new User
-                {
-                    Name = email,
-                    Password = password,
-                    Email = email
-                };
-                _mainWindow.NavigateTo(new WelcomePage(_mainWindow, newUser));
+                MessageBox.Show("Неверный e‑mail или пароль.",
+                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            // Успешный вход
+            _mainWindow.NavigateTo(new WelcomePage(_mainWindow, user));
         }
     }
 }

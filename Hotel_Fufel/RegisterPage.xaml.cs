@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using Hotel_Fufel.Services;
 
 namespace Hotel_Fufel
 {
@@ -13,55 +13,72 @@ namespace Hotel_Fufel
             _mainWindow = mainWindow;
         }
 
-        // Обработчик кнопки "Зарегистрироваться"
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            string name = NameTextBox.Text;
-            string email = EmailTextBox.Text;
+            // Читаем поля
+            string name = NameTextBox.Text.Trim();
+            string email = EmailTextBox.Text.Trim();
             string password = PasswordBox.Password;
             string confirm = ConfirmBox.Password;
-            bool isValid = true;
 
-            var inputs = new (string Value, TextBlock ErrorText)[]
+            // Сбрасываем ошибки
+            NameError.Text = EmailError.Text = PasswordError.Text = ConfirmPasswordError.Text = "";
+            NameError.Visibility = EmailError.Visibility = PasswordError.Visibility = ConfirmPasswordError.Visibility = Visibility.Collapsed;
+
+            // Проверки пустых
+            if (string.IsNullOrWhiteSpace(name))
             {
-                (NameTextBox.Text, NameError),
-                (EmailTextBox.Text, EmailError),
+                NameError.Text = "Поле не может быть пустым";
+                NameError.Visibility = Visibility.Visible;
+            }
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                EmailError.Text = "Поле не может быть пустым";
+                EmailError.Visibility = Visibility.Visible;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                PasswordError.Text = "Поле не может быть пустым";
+                PasswordError.Visibility = Visibility.Visible;
+            }
+            if (password != confirm)
+            {
+                ConfirmPasswordError.Text = string.IsNullOrWhiteSpace(confirm)
+                    ? "Поле не может быть пустым"
+                    : "Пароли не совпадают";
+                ConfirmPasswordError.Visibility = Visibility.Visible;
+            }
+
+            // Если есть ошибки — выходим
+            if (NameError.Visibility == Visibility.Visible ||
+                EmailError.Visibility == Visibility.Visible ||
+                PasswordError.Visibility == Visibility.Visible ||
+                ConfirmPasswordError.Visibility == Visibility.Visible)
+            {
+                return;
+            }
+
+            // Проверяем уникальность e‑mail
+            if (UserRepository.EmailExists(email))
+            {
+                MessageBox.Show("Пользователь с таким e‑mail уже существует.",
+                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Создаём нового пользователя и добавляем в репозиторий
+            var newUser = new User
+            {
+                Name = name,
+                Email = email,
+                Password = password
             };
+            UserRepository.Add(newUser);
 
+            MessageBox.Show("Регистрация прошла успешно.", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            foreach (var (value, error) in inputs)
-            {
-                bool empty = string.IsNullOrWhiteSpace(value);
-                error.Text = empty ? "Поле не может быть пустым" : "";
-                error.Visibility = empty ? Visibility.Visible : Visibility.Collapsed;
-                if (empty) isValid = false;
-            }
-
-            bool passwordsEmpty = string.IsNullOrWhiteSpace(PasswordBox.Password);
-            bool confirmEmpty = string.IsNullOrWhiteSpace(ConfirmBox.Password);
-
-            PasswordError.Text = passwordsEmpty ? "Поле не может быть пустым" : "";
-            PasswordError.Visibility = passwordsEmpty ? Visibility.Visible : Visibility.Collapsed;
-
-            ConfirmPasswordError.Text = confirmEmpty ? "Поле не может быть пустым" :
-                (PasswordBox.Password != ConfirmBox.Password ? "Пароли не совпадают" : "");
-            ConfirmPasswordError.Visibility = (confirmEmpty || PasswordBox.Password != ConfirmBox.Password) ?
-                Visibility.Visible : Visibility.Collapsed;
-
-            if (passwordsEmpty || confirmEmpty || PasswordBox.Password != ConfirmBox.Password)
-                isValid = false;
-
-            if (isValid)
-            {
-                User newUser = new User
-                {
-                    Name = name,
-                    Email = password,
-                    Password = email,
-                };
-
-                _mainWindow.NavigateTo(new WelcomePage(_mainWindow, newUser));
-            }
+            // Навигируем дальше
+            _mainWindow.NavigateTo(new WelcomePage(_mainWindow, newUser));
         }
 
         private void GoToLogin_Click(object sender, RoutedEventArgs e)
