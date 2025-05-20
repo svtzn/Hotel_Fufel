@@ -1,41 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Hotel_Fufel;
+using Hotel_Fufel.Data;
 
 namespace Hotel_Fufel.Services
 {
     public static class UserRepository
     {
-        // Список всех зарегистрированных пользователей
-        public static List<User> Users { get; } = new List<User>()
+        public static bool EmailExists(string email)
         {
-            // Несколько «готовых» пользователей‑заглушек:
-            new User { Name = "Иван Иванов", Email = "1", Password = "1" },
-            new User { Name = "Егор", Email = "belobrysov06@bk.ru", Password = "123" }
-        };
-
-        public static bool EmailExists(string email) =>
-            Users.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            using (var db = new AppDbContext())
+            {
+                return db.Users.Any(u => u.Email.ToLower() == email.ToLower());
+            }
+        }
 
         public static void Add(User user)
         {
-            Users.Add(user);
-            // для отладки: 
-            System.Diagnostics.Debug.WriteLine($"UserRepository: added {user.Email}; total count = {Users.Count}");
+            using (var db = new AppDbContext())
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
         }
 
         public static User Find(string email, string password)
         {
-            var u = Users.FirstOrDefault(x =>
-                x.Email.Equals(email, StringComparison.OrdinalIgnoreCase)
-             && x.Password == password);
-
-            System.Diagnostics.Debug.WriteLine(u == null
-                ? $"UserRepository: Find({email},…) — NOT found"
-                : $"UserRepository: Find({email},…) — found {u.Name}");
-
-            return u;
+            using (var db = new AppDbContext())
+            {
+                return db.Users.FirstOrDefault(u =>
+                    u.Email.ToLower() == email.ToLower() &&
+                    u.Password == password);
+            }
         }
     }
 }

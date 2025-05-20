@@ -1,12 +1,15 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using Hotel_Fufel.Services;
+using Hotel_Fufel.Data; // Обязательно!
+using Hotel_Fufel.ViewModels; // Для WelcomePage
 
 namespace Hotel_Fufel
 {
     public partial class RegisterPage : Page
     {
         private readonly MainWindow _mainWindow;
+
         public RegisterPage(MainWindow mainWindow)
         {
             InitializeComponent();
@@ -15,17 +18,14 @@ namespace Hotel_Fufel
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            // Читаем поля
             string name = NameTextBox.Text.Trim();
             string email = EmailTextBox.Text.Trim();
             string password = PasswordBox.Password;
             string confirm = ConfirmBox.Password;
 
-            // Сбрасываем ошибки
             NameError.Text = EmailError.Text = PasswordError.Text = ConfirmPasswordError.Text = "";
             NameError.Visibility = EmailError.Visibility = PasswordError.Visibility = ConfirmPasswordError.Visibility = Visibility.Collapsed;
 
-            // Проверки пустых
             if (string.IsNullOrWhiteSpace(name))
             {
                 NameError.Text = "Поле не может быть пустым";
@@ -49,7 +49,6 @@ namespace Hotel_Fufel
                 ConfirmPasswordError.Visibility = Visibility.Visible;
             }
 
-            // Если есть ошибки — выходим
             if (NameError.Visibility == Visibility.Visible ||
                 EmailError.Visibility == Visibility.Visible ||
                 PasswordError.Visibility == Visibility.Visible ||
@@ -58,27 +57,30 @@ namespace Hotel_Fufel
                 return;
             }
 
-            // Проверяем уникальность e‑mail
-            if (UserRepository.EmailExists(email))
+            using (var db = new AppDbContext())
             {
-                MessageBox.Show("Пользователь с таким e‑mail уже существует.",
-                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                // Проверка на уникальность email
+                if (db.Users.Any(u => u.Email == email))
+                {
+                    MessageBox.Show("Пользователь с таким e‑mail уже существует.",
+                                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var newUser = new User
+                {
+                    Name = name,
+                    Email = email,
+                    Password = password
+                };
+
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                MessageBox.Show("Регистрация прошла успешно.", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                _mainWindow.NavigateTo(new WelcomePage(_mainWindow, newUser));
             }
-
-            // Создаём нового пользователя и добавляем в репозиторий
-            var newUser = new User
-            {
-                Name = name,
-                Email = email,
-                Password = password
-            };
-            UserRepository.Add(newUser);
-
-            MessageBox.Show("Регистрация прошла успешно.", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            // Навигируем дальше
-            _mainWindow.NavigateTo(new WelcomePage(_mainWindow, newUser));
         }
 
         private void GoToLogin_Click(object sender, RoutedEventArgs e)
