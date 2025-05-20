@@ -13,13 +13,61 @@ namespace Hotel_Fufel.ViewModels
     {
         private readonly AppDbContext _context = new AppDbContext();
 
-        // Комнаты из БД
-        private List<Room> _allRooms = new List<Room>();
+        // Фильтры
+        public List<int?> RoomsAmountOptions { get; } = new List<int?> { null, 1, 2, 3, 4 };
+        public List<string> ComfortLevelOptions { get; } = new List<string> { "Все", "Эконом", "Стандарт", "Люкс" };
+        public List<string> BalconyOptions { get; } = new List<string> { "Все", "Да", "Нет" };
+        public List<string> KitchenOptions { get; } = new List<string> { "Все", "Да", "Нет" };
+        public List<string> WiFiOptions { get; } = new List<string> { "Все", "Да", "Нет" };
+        public List<string> SmokeOptions { get; } = new List<string> { "Все", "Да", "Нет" };
 
-        // Отфильтрованные комнаты
+        private int? _selectedRoomsAmount;
+        private string _selectedComfortLevel = "Все";
+        private string _selectedBalconyOption = "Все";
+        private string _selectedKitchenOption = "Все";
+        private string _selectedWiFiOption = "Все";
+        private string _selectedSmokeOption = "Все";
+
+        public int? SelectedRoomsAmount
+        {
+            get => _selectedRoomsAmount;
+            set { _selectedRoomsAmount = value; OnPropertyChanged(nameof(SelectedRoomsAmount)); FilterRooms(); }
+        }
+
+        public string SelectedComfortLevel
+        {
+            get => _selectedComfortLevel;
+            set { _selectedComfortLevel = value; OnPropertyChanged(nameof(SelectedComfortLevel)); FilterRooms(); }
+        }
+
+        public string SelectedBalconyOption
+        {
+            get => _selectedBalconyOption;
+            set { _selectedBalconyOption = value; OnPropertyChanged(nameof(SelectedBalconyOption)); FilterRooms(); }
+        }
+
+        public string SelectedKitchenOption
+        {
+            get => _selectedKitchenOption;
+            set { _selectedKitchenOption = value; OnPropertyChanged(nameof(SelectedKitchenOption)); FilterRooms(); }
+        }
+
+        public string SelectedWiFiOption
+        {
+            get => _selectedWiFiOption;
+            set { _selectedWiFiOption = value; OnPropertyChanged(nameof(SelectedWiFiOption)); FilterRooms(); }
+        }
+
+        public string SelectedSmokeOption
+        {
+            get => _selectedSmokeOption;
+            set { _selectedSmokeOption = value; OnPropertyChanged(nameof(SelectedSmokeOption)); FilterRooms(); }
+        }
+
+        // Основные свойства
+        public User CurrentUser { get; set; }
         public ObservableCollection<Room> Rooms { get; } = new ObservableCollection<Room>();
 
-        // Выбранная комната
         private Room _selectedRoom;
         public Room SelectedRoom
         {
@@ -27,7 +75,6 @@ namespace Hotel_Fufel.ViewModels
             set { _selectedRoom = value; OnPropertyChanged(nameof(SelectedRoom)); RecalculateTotal(); }
         }
 
-        // Даты
         private DateTime? _checkInDate;
         public DateTime? CheckInDate
         {
@@ -42,7 +89,6 @@ namespace Hotel_Fufel.ViewModels
             set { _checkOutDate = value; OnPropertyChanged(nameof(CheckOutDate)); RecalculateTotal(); }
         }
 
-        // Итоговая цена
         private decimal _totalPrice;
         public decimal TotalPrice
         {
@@ -50,107 +96,85 @@ namespace Hotel_Fufel.ViewModels
             private set { _totalPrice = value; OnPropertyChanged(nameof(TotalPrice)); }
         }
 
-        // Опции фильтрации
-        public List<int?> RoomsAmountOptions { get; } = new List<int?> { null, 1, 2, 3, 4 };
-        public List<string> ComfortLevelOptions { get; } = new List<string> { "Все", "Эконом", "Стандарт", "Люкс" };
-        public List<string> BalconyOptions { get; } = new List<string> { "Все", "Да", "Нет" };
-        public List<string> KitchenOptions { get; } = new List<string> { "Все", "Да", "Нет" };
-        public List<string> WiFiOptions { get; } = new List<string> { "Все", "Да", "Нет" };
-        public List<string> SmokeOptions { get; } = new List<string> { "Все", "Да", "Нет" };
-
-        // Выбранные значения фильтров
-        private int? _selectedRoomsAmount;
-        public int? SelectedRoomsAmount
-        {
-            get => _selectedRoomsAmount;
-            set { _selectedRoomsAmount = value; OnPropertyChanged(nameof(SelectedRoomsAmount)); FilterRooms(); }
-        }
-
-        private string _selectedComfortLevel = "Все";
-        public string SelectedComfortLevel
-        {
-            get => _selectedComfortLevel;
-            set { _selectedComfortLevel = value; OnPropertyChanged(nameof(SelectedComfortLevel)); FilterRooms(); }
-        }
-
-        private string _selectedBalconyOption = "Все";
-        public string SelectedBalconyOption
-        {
-            get => _selectedBalconyOption;
-            set { _selectedBalconyOption = value; OnPropertyChanged(nameof(SelectedBalconyOption)); FilterRooms(); }
-        }
-
-        private string _selectedKitchenOption = "Все";
-        public string SelectedKitchenOption
-        {
-            get => _selectedKitchenOption;
-            set { _selectedKitchenOption = value; OnPropertyChanged(nameof(SelectedKitchenOption)); FilterRooms(); }
-        }
-
-        private string _selectedWiFiOption = "Все";
-        public string SelectedWiFiOption
-        {
-            get => _selectedWiFiOption;
-            set { _selectedWiFiOption = value; OnPropertyChanged(nameof(SelectedWiFiOption)); FilterRooms(); }
-        }
-
-        private string _selectedSmokeOption = "Все";
-        public string SelectedSmokeOption
-        {
-            get => _selectedSmokeOption;
-            set { _selectedSmokeOption = value; OnPropertyChanged(nameof(SelectedSmokeOption)); FilterRooms(); }
-        }
-
         public ICommand BookCommand { get; }
 
         public HotelRoomsViewModel()
         {
-            LoadRoomsFromDatabase();
+            LoadRoomsFromDb();
 
             BookCommand = new RelayCommand<object>(_ =>
-                MessageBox.Show(
-                    $"Бронирование:\nКомната: {SelectedRoom?.ComfortLevel}\n" +
-                    $"С {CheckInDate:dd.MM.yyyy} по {CheckOutDate:dd.MM.yyyy}\n" +
-                    $"Итого: {TotalPrice:F0} ₽"),
-                _ => SelectedRoom != null && CheckInDate.HasValue && CheckOutDate.HasValue && CheckOutDate > CheckInDate);
+            {
+                if (CurrentUser == null)
+                {
+                    MessageBox.Show("Ошибка: пользователь не найден.");
+                    return;
+                }
 
-            SelectedRoomsAmount = null;
-            SelectedComfortLevel = "Все";
-            SelectedBalconyOption = "Все";
-            SelectedKitchenOption = "Все";
-            SelectedWiFiOption = "Все";
-            SelectedSmokeOption = "Все";
+                var booking = new Booking
+                {
+                    UserId = CurrentUser.Id,
+                    RoomId = SelectedRoom.Id,
+                    CheckInDate = CheckInDate.Value,
+                    CheckOutDate = CheckOutDate.Value
+                };
+
+                _context.Bookings.Add(booking);
+                SelectedRoom.IsFree = false;
+                _context.SaveChanges();
+
+                MessageBox.Show("Бронирование успешно сохранено!");
+                LoadRoomsFromDb();
+            },
+            _ => SelectedRoom != null && CheckInDate.HasValue && CheckOutDate.HasValue && CheckOutDate > CheckInDate);
         }
 
-        private void LoadRoomsFromDatabase()
+        private void LoadRoomsFromDb()
         {
-            _allRooms = _context.Rooms.ToList();
             FilterRooms();
         }
 
         private void FilterRooms()
         {
             Rooms.Clear();
-            var q = _allRooms.Where(r => r.IsFree &&
-                (!SelectedRoomsAmount.HasValue || r.RoomsAmount == SelectedRoomsAmount.Value) &&
-                (SelectedComfortLevel == "Все" || r.ComfortLevel == SelectedComfortLevel) &&
-                (SelectedBalconyOption == "Все" || (SelectedBalconyOption == "Да" && r.Balcony) || (SelectedBalconyOption == "Нет" && !r.Balcony)) &&
-                (SelectedKitchenOption == "Все" || (SelectedKitchenOption == "Да" && r.Kitchen) || (SelectedKitchenOption == "Нет" && !r.Kitchen)) &&
-                (SelectedWiFiOption == "Все" || (SelectedWiFiOption == "Да" && r.WiFi) || (SelectedWiFiOption == "Нет" && !r.WiFi)) &&
-                (SelectedSmokeOption == "Все" || (SelectedSmokeOption == "Да" && r.Smoke) || (SelectedSmokeOption == "Нет" && !r.Smoke))
-            );
 
-            foreach (var r in q)
-                Rooms.Add(r);
+            var query = _context.Rooms.Where(r => r.IsFree);
+
+            if (SelectedRoomsAmount.HasValue)
+                query = query.Where(r => r.RoomsAmount == SelectedRoomsAmount.Value);
+
+            if (SelectedComfortLevel != "Все")
+                query = query.Where(r => r.ComfortLevel == SelectedComfortLevel);
+
+            query = ApplyFilter(query, SelectedBalconyOption, r => r.Balcony);
+            query = ApplyFilter(query, SelectedKitchenOption, r => r.Kitchen);
+            query = ApplyFilter(query, SelectedWiFiOption, r => r.WiFi);
+            query = ApplyFilter(query, SelectedSmokeOption, r => r.Smoke);
+
+            foreach (var room in query.ToList())
+                Rooms.Add(room);
 
             RecalculateTotal();
+        }
+
+        // Исправленный метод с использованием классического switch
+        private IQueryable<Room> ApplyFilter(IQueryable<Room> query, string filter, Func<Room, bool> predicate)
+        {
+            switch (filter)
+            {
+                case "Да":
+                    return query.Where(predicate).AsQueryable();
+                case "Нет":
+                    return query.Where(r => !predicate(r)).AsQueryable();
+                default:
+                    return query;
+            }
         }
 
         private void RecalculateTotal()
         {
             if (SelectedRoom != null && CheckInDate.HasValue && CheckOutDate.HasValue && CheckOutDate > CheckInDate)
             {
-                var days = (CheckOutDate.Value - CheckInDate.Value).Days;
+                int days = (CheckOutDate.Value - CheckInDate.Value).Days;
                 TotalPrice = days * SelectedRoom.PricePerNight;
             }
             else
@@ -160,7 +184,9 @@ namespace Hotel_Fufel.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name) =>
+        protected void OnPropertyChanged(string name)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

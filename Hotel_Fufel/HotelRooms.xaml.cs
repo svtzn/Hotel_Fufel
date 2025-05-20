@@ -16,7 +16,9 @@ namespace Hotel_Fufel
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            this.DataContext = new HotelRoomsViewModel();
+            var vm = new HotelRoomsViewModel();
+            vm.CurrentUser = WelcomePage.currentUser;
+            this.DataContext = vm;
 
         }
         private void Card_Click(object sender, MouseButtonEventArgs e)
