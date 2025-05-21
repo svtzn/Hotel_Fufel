@@ -21,10 +21,18 @@ namespace Hotel_Fufel.ViewModels
     {
         private readonly AppDbContext _context = new AppDbContext();
         private readonly User _user;
-
         public string Name => _user.Name;
         public string Email => _user.Email;
-        public string ProfilePic => _user.ProfilePic;
+        public string ProfilePic
+        {
+            get => _user.ProfilePic;
+            set
+            {
+                _user.ProfilePic = value;
+                OnPropertyChanged(nameof(ProfilePic));
+            }
+        }
+
 
         public ObservableCollection<BookingDisplay> Bookings { get; set; } = new ObservableCollection<BookingDisplay>();
         private BookingDisplay _selectedBooking;

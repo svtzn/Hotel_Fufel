@@ -185,6 +185,9 @@
   <ItemGroup>
     <Resource Include="Resources\default.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\makaka.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

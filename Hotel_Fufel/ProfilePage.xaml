@@ -26,16 +26,140 @@
                     Content="Профиль" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="45,0,45,0">
+            <!-- Секция профиля -->
             <StackPanel Orientation="Horizontal" Height="240">
-                <Border Width="200" Height="150" CornerRadius="18" Background="AliceBlue" >
-
+                <Border Width="200" Height="150" CornerRadius="18">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding ProfilePic}" Stretch="UniformToFill"/>
+                    </Border.Background>
                 </Border>
+
                 <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="Имя" Margin="0,0,0,5" FontFamily="Trebuchet MS" FontSize="16"/>
-                    <TextBlock Text="Email"/>
-                    <Button Content="Изменить профиль" Style="{DynamicResource ButtonStyle2}" Margin="0,76,0,0"/>
+                    <TextBlock Text="{Binding Name}" Margin="0,0,0,5" 
+                               FontFamily="Trebuchet MS" FontSize="16"/>
+                    <TextBlock Text="{Binding Email}" FontFamily="Trebuchet MS"/>
+                    <Button Content="Изменить профиль" Style="{DynamicResource ButtonStyle2}" 
+                            Margin="0,76,0,0"/>
                 </StackPanel>
             </StackPanel>
+
+            <!-- Секция бронирований -->
+            <TextBlock Text="Ваши бронирования" FontSize="20" FontWeight="Bold" Margin="0,20,0,10"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox ItemsSource="{Binding Bookings}"
+             SelectedItem="{Binding SelectedBooking}"
+             BorderThickness="0"
+             Background="Transparent">
+
+                    <!-- Контейнер для элементов -->
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <!-- Стиль выделения элементов -->
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Margin" Value="10"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd"
+                                    CornerRadius="12"
+                                    BorderThickness="2"
+                                    BorderBrush="Transparent">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" 
+                                            Property="BorderBrush" 
+                                            Value="#D9B99B"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <!-- Шаблон карточки бронирования -->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#E1E1E1"
+                        CornerRadius="12"
+                        Width="500" 
+                        Height="120"
+                        Padding="10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Левая часть - информация -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <!-- Изображение номера -->
+                                        <Border Width="160" Height="90" CornerRadius="12">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding Room.ImagePath}"
+                                                Stretch="UniformToFill"/>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <!-- Детали бронирования -->
+                                        <StackPanel Margin="15,0,0,0">
+                                            <TextBlock Text="{Binding Room.ComfortLevel}"
+                                           FontFamily="Trebuchet MS"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+
+                                            <TextBlock Margin="0,10,0,0">
+                                    <Run Text="Въезд: "/>
+                                    <Run Text="{Binding CheckIn, StringFormat='dd.MM.yyyy'}"/>
+                                    <LineBreak/>
+                                    <Run Text="Выезд: "/>
+                                    <Run Text="{Binding CheckOut, StringFormat='dd.MM.yyyy'}"/>
+                                            </TextBlock>
+
+                                            <TextBlock FontSize="12" Margin="0,4,0,0">
+                                    <Run Text="Комнат: "/>
+                                    <Run Text="{Binding Room.RoomsAmount}"/>
+                                    <LineBreak/>
+                                    <Run Text="Wi-Fi: "/>
+                                    <Run Text="{Binding Room.WiFi, Converter={StaticResource BoolToYesNo}}"/>
+                                    <LineBreak/>
+                                    <Run Text="Кухня: "/>
+                                    <Run Text="{Binding Room.Kitchen, Converter={StaticResource BoolToYesNo}}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Правая часть - цена и кнопка -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding TotalPrice, StringFormat='Итого: ₽{0}'}"
+                                       FontFamily="Trebuchet MS"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Margin="0,0,20,10"/>
+
+                                        <Button Content="Отменить"
+                                    Command="{Binding DataContext.CancelBookingCommand, 
+                                        RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource ButtonStyle1}"
+                                    Width="100"
+                                    IsEnabled="{Binding IsSelected, 
+                                        RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 </Page>
