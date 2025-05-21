@@ -94,6 +94,7 @@
     <Compile Include="Services\UserRepository.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ViewModels\HotelRoomsViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="WelcomePage.xaml.cs">
@@ -180,6 +181,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\room2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\default.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Hotel_Fufel.ViewModels;
 
 namespace Hotel_Fufel
 {
@@ -16,6 +17,7 @@ namespace Hotel_Fufel
         {
             InitializeComponent();
             _mainWindow = mainWindow;
+            this.DataContext = new ProfileViewModel(WelcomePage.currentUser);
         }
         private void Profile_Click(object sender, RoutedEventArgs e)
         {

@@ -25,8 +25,17 @@
             <Button Name="Profile" Click="Profile_Click" Style="{DynamicResource ButtonStyle2}" FontFamily="Trebuchet MS"
                     Content="Профиль" Height="64" Width="Auto" Margin="15,0,15,0" FontSize="14"/>
         </StackPanel>
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Margin="45,0,45,0">
+            <StackPanel Orientation="Horizontal" Height="240">
+                <Border Width="200" Height="150" CornerRadius="18" Background="AliceBlue" >
 
+                </Border>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Имя" Margin="0,0,0,5" FontFamily="Trebuchet MS" FontSize="16"/>
+                    <TextBlock Text="Email"/>
+                    <Button Content="Изменить профиль" Style="{DynamicResource ButtonStyle2}" Margin="0,76,0,0"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

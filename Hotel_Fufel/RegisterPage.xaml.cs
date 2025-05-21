@@ -71,7 +71,8 @@ namespace Hotel_Fufel
                 {
                     Name = name,
                     Email = email,
-                    Password = password
+                    Password = password,
+                    ProfilePic = "/Resources/default.jpg"
                 };
 
                 db.Users.Add(newUser);
