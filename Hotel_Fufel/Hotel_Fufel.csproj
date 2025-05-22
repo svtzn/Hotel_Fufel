@@ -65,11 +65,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdminBookingsPage.xaml.cs">
+      <DependentUpon>AdminBookingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPage.xaml.cs">
+      <DependentUpon>AdminPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminRoomsPage.xaml.cs">
+      <DependentUpon>AdminRoomsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminUsersPage.xaml.cs">
+      <DependentUpon>AdminUsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminWelcomePage.xaml.cs">
+      <DependentUpon>AdminWelcomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Booking.cs" />
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToYesNoConverter.cs" />
+    <Compile Include="Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="HotelRooms.xaml.cs">
@@ -93,6 +109,9 @@
     <Compile Include="Rooms.cs" />
     <Compile Include="Services\UserRepository.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="ViewModels\AdminBookingsViewModel.cs" />
+    <Compile Include="ViewModels\AdminRoomsViewModel.cs" />
+    <Compile Include="ViewModels\AdminUsersViewModel.cs" />
     <Compile Include="ViewModels\HotelRoomsViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
@@ -100,6 +119,26 @@
     <Compile Include="WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="AdminBookingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminRoomsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminUsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AdminWelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContactsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

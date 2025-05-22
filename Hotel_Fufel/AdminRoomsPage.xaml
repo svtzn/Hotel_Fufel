@@ -1,0 +1,58 @@
+﻿<Page x:Class="Hotel_Fufel.AdminRoomsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:Hotel_Fufel.ViewModels"
+      Title="AdminRoomsPage">
+
+    <Page.DataContext>
+        <vm:AdminRoomsViewModel />
+    </Page.DataContext>
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Text="Управление номерами"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
+        <!-- Таблица -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Rooms}" AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedRoom}" Margin="0,10" CanUserAddRows="False"
+                  IsReadOnly="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Уровень" Binding="{Binding ComfortLevel}" />
+                <DataGridTextColumn Header="Комнат" Binding="{Binding RoomsAmount}" />
+                <DataGridTextColumn Header="Цена" Binding="{Binding PricePerNight}" />
+                <DataGridCheckBoxColumn Header="Балкон" Binding="{Binding Balcony}" />
+                <DataGridCheckBoxColumn Header="Кухня" Binding="{Binding Kitchen}" />
+                <DataGridCheckBoxColumn Header="WiFi" Binding="{Binding WiFi}" />
+                <DataGridCheckBoxColumn Header="Курение" Binding="{Binding Smoke}" />
+                <DataGridCheckBoxColumn Header="Душ" Binding="{Binding Shower}" />
+                <DataGridCheckBoxColumn Header="Свободен" Binding="{Binding IsFree}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Добавление нового номера -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,15,0,0" HorizontalAlignment="Center">
+            <Button Content="Добавить номер"
+                    Command="{Binding AddRoomCommand}"
+                    Margin="10,0"
+                    Padding="12,6"
+                    Style="{StaticResource ButtonStyle1}" />
+            <Button Content="Сохранить изменения"
+                    Command="{Binding SaveChangesCommand}"
+                    Margin="10,0"
+                    Padding="12,6"
+                    Style="{StaticResource ButtonStyle1}" />
+        </StackPanel>
+    </Grid>
+</Page>

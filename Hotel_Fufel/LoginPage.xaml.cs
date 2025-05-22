@@ -46,6 +46,13 @@ namespace Hotel_Fufel
                 return;
             }
 
+            if (email == "admin" && password == "admin")
+            {
+                // Переход на админ-панель
+                _mainWindow.NavigateTo(new AdminPage(_mainWindow));
+                return;
+            }
+
             // Ищем пользователя в репозитории
             var user = UserRepository.Find(email, password);
             if (user == null)

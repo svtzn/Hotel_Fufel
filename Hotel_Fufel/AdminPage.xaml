@@ -1,0 +1,24 @@
+﻿<Page x:Class="Hotel_Fufel.AdminPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Hotel_Fufel"
+      Title="AdminPage"
+      Background="#FFFBF8" Height="770" Width="790">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button Content="Бронирования" Click="Bookings_Click" Style="{StaticResource ButtonStyle1}" Margin="10"/>
+            <Button Content="Пользователи" Click="Users_Click" Style="{StaticResource ButtonStyle1}" Margin="10"/>
+            <Button Content="Номера" Click="Rooms_Click" Style="{StaticResource ButtonStyle1}" Margin="10"/>
+        </StackPanel>
+
+        <!-- Контент -->
+        <Frame x:Name="ContentFrame" Grid.Row="1"/>
+    </Grid>
+</Page>

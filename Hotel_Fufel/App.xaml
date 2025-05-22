@@ -6,6 +6,7 @@
              xmlns:conv="clr-namespace:Hotel_Fufel.Converters">
     <Application.Resources>
         <conv:BoolToYesNoConverter x:Key="BoolToYesNo"/>
+        <conv:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>

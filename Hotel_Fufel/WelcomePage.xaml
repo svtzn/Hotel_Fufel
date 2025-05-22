@@ -31,8 +31,15 @@
                 <Button Content="ПЕРЕЙТИ К НОМЕРАМ" Click="Rooms_Click" Style="{DynamicResource ButtonStyle1}" Width="180" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="78,0,0,0"/>
             </StackPanel>
             <StackPanel Margin="0,40,0,0" >
-                <Border Width="300" Height="250" Background="#DDDDDD" CornerRadius="18" Margin="78,0,0,0" HorizontalAlignment="Left">
-                    <TextBlock Text="FufelHotel INFO" HorizontalAlignment="Left" Foreground="#222222" Margin="20,20,0,0" FontSize="20" FontFamily="Calibri" TextAlignment="Left" FontWeight="Bold"/>
+                <Border Width="600" Height="250" Background="#ebebeb" CornerRadius="18" Margin="78,0,0,0" HorizontalAlignment="Left" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="FufelHotel INFO" HorizontalAlignment="Left" Foreground="#222222" FontSize="20" FontFamily="Calibri" TextAlignment="Left" FontWeight="Bold"/>
+                        <TextBlock Text="Ваш волшебный отдых начинается здесь — в отеле, где реальность становится сказкой." FontSize="18" FontFamily="Calibri" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                        <TextBlock Text="✨ Уютные номера с дизайном, вдохновлённым чудесами" FontSize="18" FontFamily="Calibri" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                        <TextBlock Text="🍽 Изысканная кухня для самых взыскательных гурманов" FontSize="18" FontFamily="Calibri" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                        <TextBlock Text="Быстрое бронирование" FontSize="20" FontFamily="Calibri" TextWrapping="Wrap" Foreground="#222222" FontWeight="Bold" Margin="0,3,0,0"/>
+                        <TextBlock Text="Выберите даты и количество гостей, и мы подберём для вас идеальный номер." FontSize="18" FontFamily="Calibri" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                    </StackPanel>
                 </Border>
             </StackPanel>
         </StackPanel>
